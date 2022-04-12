@@ -7,15 +7,15 @@ router
     .post(postController.addPost);
 
 router
-    .route('/:id')
+    .route('/:post_id')
     .get(postController.singlePost)
     .put(postController.updatePost)
     .patch(postController.updatePost)
     .delete(postController.deletePost);
 
 router  
-    .route('/:id/comments')
-    .get(postController.comment);
+    .route('/:post_id/comments')
+    .get(postController.postInventories);
 
 
 
