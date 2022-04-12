@@ -18,6 +18,7 @@
   "homepage": "https://github.com/packback2000/Madison-Henry-Capstone-Server#readme",
   "dependencies": {
     "axios": "^0.26.1",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
     "knex": "^0.95.15",
     "mysql": "^2.18.1",
