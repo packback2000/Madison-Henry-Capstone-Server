@@ -26,10 +26,10 @@ exports.singleSubject = (req, res) => {
 
 exports.addSubject = (req, res) => {
     if (!req.body.title) {
-        return res.status(400).send('Please make sure to provide title');
+        return res.status(400).send('Please make sure to provide title and body');
       }
 
-    knex('subjects')
+    knex('posts')
     .insert(req.body)
     .then((data) => {
         const newSubjectURL = `/subjects/${data[0]}`;
@@ -40,6 +40,7 @@ exports.addSubject = (req, res) => {
 
 exports.subjectInventory = (req,res) => {
     knex('posts')
+
     .where({subject_id: req.params.subject_id})
     .then((data) => {
         res.status(200).json(data);
@@ -52,10 +53,15 @@ exports.subjectInventory = (req,res) => {
 };
 
 exports.addSubjectPost = (req,res) => {
+    if (!req.body.title || !req.body.body) {
+        return res.status(400).send('Fill out all fields');
+      }
+
     knex('posts')
-    .insert(req.body && req.title)
+    .where({subject_id: req.params.subject_id})
+    .insert(req.params.subject_id)
     .then((data) => {
-        const newPostURL = `subjects/${req.params.subject_id}/${data[0]}`
+        const newPostURL = `/posts/${data[0]}`;
         res.status(201).location(newPostURL).send(newPostURL);
     })
     .catch((err) => res.status(400).send(`Error creating post: ${err}`));

@@ -5,7 +5,8 @@ router.route('/').get(subjectController.index);
 
 router.route('/:subject_id').get(subjectController.singleSubject);
 
-router.route('/').post(subjectController.addSubject);
+router.route('/:subject_id')
+.post(subjectController.addSubject);
 
 router
     .route('/:subject_id/posts')
