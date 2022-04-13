@@ -6,5 +6,4 @@ router
     .get(commentController.index)
     .post(commentController.addComment);
 
-
 module.exports = router;

@@ -40,7 +40,6 @@ exports.addSubject = (req, res) => {
 
 exports.subjectInventory = (req,res) => {
     knex('posts')
-
     .where({subject_id: req.params.subject_id})
     .then((data) => {
         res.status(200).json(data);
