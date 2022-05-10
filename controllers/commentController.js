@@ -23,3 +23,41 @@ exports.addComment = (req, res) => {
     })
     .catch((err) => res.status(400).send(`Error creating post: ${err}`));
 };
+
+exports.singleComment = (req,res) => {
+    knex('comments')
+    .where({comment_id:req.params.comment_id})
+    .then((data) => {
+        if (!data.length) {
+            return res.status(400).send(`Record with id: ${req.params.comment_id} is not found`);
+        }
+        res.status(200).json(data[0]);
+    })
+    .catch((err) =>
+    res.status(400).send(`Error retrieving posts ${req.params.comment_id} ${err}`)
+    );
+};
+
+exports.updateComment = (req, res) => {
+    knex('posts')
+    .update(req.body)
+    .where({comment_id: req.params.comment_id})
+    .then(() => {
+        res.status(200).send(`Post with id ${req.params.post_id} has been updated`);
+    })
+    .catch((err) =>
+        res.status(400).send(`Error updating post ${req.params.id} ${err}`)
+    );
+};
+
+exports.deleteComment = (req,res) => {
+    knex('comments')
+    .delete()
+    .where({comment_id: req.params.comment_id})
+    .then(() => {
+        res.status(204).send('comment has been deleted');
+    })
+    .catch((err) => 
+        res.status(400).send('Error deleting comment')
+    );
+};

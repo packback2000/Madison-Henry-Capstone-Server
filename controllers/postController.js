@@ -26,7 +26,7 @@ exports.singlePost = (req, res) => {
 
 exports.addPost = (req, res) => {
     if (!req.body.title || !req.body.body) {
-        return res.status(400).send('Please make sure to provide name, manager, address, phone and email fields in a request');
+        return res.status(400).send('Please provide all fields');
       }
 
     knex('posts')
@@ -56,9 +56,9 @@ exports.postInventories = (req,res) => {
 exports.updatePost = (req, res) => {
     knex('posts')
     .update(req.body)
-    .where({id: req.params.post_id})
+    .where({post_id: req.params.post_id})
     .then(() => {
-        res.statud(200).send(`Post with id ${req.params.post_id} has been updated`);
+        res.status(200).send(`Post with id ${req.params.post_id} has been updated`);
     })
     .catch((err) =>
         res.status(400).send(`Error updating post ${req.params.id} ${err}`)
