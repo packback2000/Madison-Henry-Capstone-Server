@@ -2,7 +2,6 @@ const knex = require('knex')(require('../knexfile').development);
 
 exports.index = (_req, res) => {
     knex('posts')
-    
     .then((data) => {
         res.status(200).json(data);
     })
@@ -13,10 +12,10 @@ exports.index = (_req, res) => {
 
 exports.singlePost = (req, res) => {
     knex('posts')
-    .where({id: req.params.id})
+    .where({post_id: req.params.post_id})
     .then((data) => {
         if(!data.length) {
-            return res.status(400).send(`Record with id: ${req.params.id} is not found`);
+            return res.status(400).send(`Record with id: ${req.params.post_id} is not found`);
         }
         res.status(200).json(data[0]);
     })
@@ -26,22 +25,22 @@ exports.singlePost = (req, res) => {
 };
 
 exports.addPost = (req, res) => {
-    if (!req.body.title || !req.body.num_posts) {
-        return res.status(400).send('Please make sure to provide title and number of post');
+    if (!req.body.title || !req.body.body) {
+        return res.status(400).send('Please provide all fields');
       }
 
     knex('posts')
     .insert(req.body)
     .then((data) => {
         const newPostURL = `/posts/${data[0]}`;
-        res.status(201).location(newPostURL).send(newPostURL)
+        res.status(201).location(newPostURL).send(newPostURL);
     })
     .catch((err) => res.status(400).send(`Error creating post: ${err}`));
-}
+};
 
-exports.postComments = (req,res) => {
+exports.postInventories = (req,res) => {
     knex('comments')
-    .where({post_id: req.params.id})
+    .where({post_id: req.params.post_id})
     .then((data) => {
         res.status(200).json(data);
     })
@@ -49,17 +48,17 @@ exports.postComments = (req,res) => {
     res
     .status(400)
     .send(
-        `Error retrieving comments for post ${req.params.id} ${err}`
+        `Error retrieving comments for post ${req.params.post_id} ${err}`
     )
     );
-}
+};
 
 exports.updatePost = (req, res) => {
     knex('posts')
     .update(req.body)
-    .where({id: req.params.id})
+    .where({post_id: req.params.post_id})
     .then(() => {
-        res.statud(200).send(`Post with id ${req.params.id} has been updated`);
+        res.status(200).send(`Post with id ${req.params.post_id} has been updated`);
     })
     .catch((err) =>
         res.status(400).send(`Error updating post ${req.params.id} ${err}`)
@@ -69,11 +68,12 @@ exports.updatePost = (req, res) => {
 exports.deletePost = (req,res) => {
     knex('posts')
     .delete()
-    .where({id: req.params.id})
+    .where({post_id: req.params.post_id})
     .then(() => {
-        res.status(204).send(`post with id ${req.params.id} has been deleted`);
+        res.status(204).send(`post with id ${req.params.post_id} has been deleted`);
     })
     .catch((err) => 
-        res.status(400).send(`Error deleting post ${req.params.id} ${err}`)
+        res.status(400).send(`Error deleting post ${req.params.post_id} ${err}`)
     );
 };
+
